@@ -11,7 +11,7 @@ const int ECHO_PIN = 28;
 volatile uint64_t dt;
 volatile int dt_flag = 0;
 volatile bool timer_fired = false;
-volatile int flag_running = 0;
+
 
 void echo_callback(uint gpio, uint32_t events) {
     if (events & GPIO_IRQ_EDGE_RISE) {
@@ -38,6 +38,7 @@ int main() {
     gpio_pull_down(ECHO_PIN);
 
     double distancia;
+    int flag_running = 0;
 
     gpio_set_irq_enabled_with_callback(ECHO_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &echo_callback);
 
@@ -89,7 +90,6 @@ int main() {
             continue;
         }
 
-        datetime_t t = {0};
         rtc_get_datetime(&t);
         char datetime_buf[256];
         char *datetime_str = &datetime_buf[0];
